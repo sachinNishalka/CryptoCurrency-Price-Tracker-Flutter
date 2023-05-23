@@ -11,6 +11,7 @@ class _PriceScreenState extends State<PriceScreen> {
 // variables
   String selectedValue = 'USD';
   String? bitCoinValue = '?';
+  bool isWaiting = false;
 // getting values for dropdown
   List<DropdownMenuItem<String>> getSelectValues() {
     List<DropdownMenuItem<String>> valueList = [];
@@ -39,6 +40,25 @@ class _PriceScreenState extends State<PriceScreen> {
     }
   }
 
+
+  // function to create list of crypto cards
+
+  Column cryptoCards(){
+    List <cryptoWidget> cryptoWidgetList= [];
+    for(String cryptoCyrrencyType in cryptoList){
+      cryptoWidget oneCryptoCard = cryptoWidget(value: isWaiting ? '?' : bitCoinValue.toString(),cryptoCurrency: cryptoCyrrencyType, selectedCurrency: selectedValue, );
+
+      cryptoWidgetList.add(oneCryptoCard);
+    }
+
+    return Column(children: cryptoWidgetList,);
+  }
+
+
+
+
+
+
   @override
   void InitState() {
     super.initState();
@@ -56,9 +76,7 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Column(
-            children: [],
-          ),
+         cryptoCards(),
           Container(
             height: 150.0,
             alignment: Alignment.center,
@@ -104,7 +122,7 @@ class cryptoWidget extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
           child: Text(
-            '1 $cryptoCurrency = $cryptoCurrency $selectedCurrency',
+            '1 $cryptoCurrency = $value $selectedCurrency',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20.0,
