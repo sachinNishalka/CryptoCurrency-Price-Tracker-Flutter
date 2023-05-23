@@ -36,16 +36,31 @@ const apiKey = 'EC9E782C-6F9B-4138-B02C-4D73B0827192';
 class CoinData {
   // getting coin data from API
   Future getCoinData(String selectedItem) async {
-    var url = Uri.parse(
-        'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=$apiKey');
-    http.Response response = await http.get(url);
+    Map <String, String> cryptoPrices = {};
+    for(String crypto in cryptoList){
+      var url = Uri.parse(
+          'https://rest.coinapi.io/v1/exchangerate/$crypto/$selectedItem?apikey=$apiKey');
+      http.Response response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      String data = response.body;
+      if (response.statusCode == 200) {
 
-      var decodedData = jsonDecode(data);
-      double rate = decodedData['rate'];
-      return rate.toStringAsFixed(2);
+        // this code will be the final code and initial code can be found in last commits
+
+        String data = response.body;
+
+        var decodedData = jsonDecode(data);
+        double rate = decodedData['rate'];
+        cryptoPrices[crypto] = rate.toStringAsFixed(2);
+      }else{
+        print(response.statusCode);
+      }
     }
+
+    return cryptoPrices;
+
+
+
   }
+
+
 }

@@ -10,8 +10,10 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
 // variables
   String selectedValue = 'USD';
-  String? bitCoinValue = '?';
+  Map<String, String> bitCoinValue = {};
   bool isWaiting = false;
+
+
 // getting values for dropdown
   List<DropdownMenuItem<String>> getSelectValues() {
     List<DropdownMenuItem<String>> valueList = [];
@@ -26,14 +28,15 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
 // getting data from api
-
   void getdata() async {
+    isWaiting = true;
     try {
       CoinData coinData = CoinData();
-      var rate = await coinData.getCoinData(selectedValue);
-      print(rate);
+      var rates = await coinData.getCoinData(selectedValue);
+      isWaiting = false;
+      print(rates);
       setState(() {
-        bitCoinValue = rate;
+        bitCoinValue = rates;
       });
     } on Exception catch (e) {
       print(e);
@@ -46,7 +49,7 @@ class _PriceScreenState extends State<PriceScreen> {
   Column cryptoCards(){
     List <cryptoWidget> cryptoWidgetList= [];
     for(String cryptoCyrrencyType in cryptoList){
-      cryptoWidget oneCryptoCard = cryptoWidget(value: isWaiting ? '?' : bitCoinValue.toString(),cryptoCurrency: cryptoCyrrencyType, selectedCurrency: selectedValue, );
+      cryptoWidget oneCryptoCard = cryptoWidget(value: isWaiting ? '?' : bitCoinValue[cryptoCyrrencyType].toString(),cryptoCurrency: cryptoCyrrencyType, selectedCurrency: selectedValue, );
 
       cryptoWidgetList.add(oneCryptoCard);
     }
