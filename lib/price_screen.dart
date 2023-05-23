@@ -24,37 +24,6 @@ class _PriceScreenState extends State<PriceScreen> {
     return valueList;
   }
 
-// getting the coin data
-  List<Widget> gettingCryptoData() {
-    List<Widget> cryptoCurrencyList = [];
-    for (String valueInList in cryptoList) {
-      Padding oneItem = Padding(
-        padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-        child: Card(
-          color: Colors.lightBlueAccent,
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-            child: Text(
-              '1 BTC = $bitCoinValue $valueInList',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      );
-      cryptoCurrencyList.add(oneItem);
-    }
-
-    return cryptoCurrencyList;
-  }
-
 // getting data from api
 
   void getdata() async {
@@ -107,6 +76,42 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class cryptoWidget extends StatelessWidget {
+  const cryptoWidget(
+      {required this.value,
+      required this.selectedCurrency,
+      required this.cryptoCurrency});
+
+  final String value;
+  final String selectedCurrency;
+  final String cryptoCurrency;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            '1 $cryptoCurrency = $cryptoCurrency $selectedCurrency',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
